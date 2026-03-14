@@ -1,7 +1,13 @@
 package com.example.Consumer.messaging;
 
+import com.example.Consumer.dto.LoteDTO;
+
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.example.Consumer.client.TransaccionApiClient;
 import com.example.Consumer.dto.LoteDTO;
@@ -9,6 +15,9 @@ import com.example.Consumer.dto.TransaccionesDTO;
 import com.example.Consumer.service.ProcesamientoService;
 import com.rabbitmq.client.Channel;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.amqp.core.Message;
@@ -42,10 +51,16 @@ public class TransaccionConsumer {
             for (TransaccionesDTO transaccion : lote.getTransacciones()) {
 
                 UUID uuid = transaccion.getUuidInterno();
-
+                // aqui hay idempotencia uso el metodo de ProcesamientoService
                 if (procesamientoService.yaProcesada(uuid)) {
                     System.out.println("[SKIP] Transacción duplicada: " + transaccion.getIdTransaccion());
+                    
+//					Map<String, List<TransaccionesDTO>> duplicadas = new HashMap<>();
+//
+//					duplicadas.add(transaccion, d);
                     continue;
+                    
+                    
                 }
 
                 System.out.println("[ENVIO] Transaccion: " + transaccion.getIdTransaccion());

@@ -11,6 +11,7 @@ public class ProcesamientoService {
 
     private final Set<UUID> procesadas = ConcurrentHashMap.newKeySet();
 
+    // usa un booleano y el metodo contains pra de sir si es un true o false si ya tiene ese uuid
     public boolean yaProcesada(UUID uuid) {
         return procesadas.contains(uuid);
     }
