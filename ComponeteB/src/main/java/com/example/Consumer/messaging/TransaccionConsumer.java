@@ -31,7 +31,8 @@ public class TransaccionConsumer {
             "cola.bi",
             "cola.gyt",
             "cola.banrural"
-    })
+    }, concurrency = "2"
+    )
     public void consumirTransaccion(LoteDTO lote, Message message, Channel channel) {
 
         System.out.println("Procesando lote: " + lote.getLoteId());
